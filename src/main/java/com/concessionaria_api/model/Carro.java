@@ -55,3 +55,4 @@ public class Carro {
     @Column(nullable = false)
     private StatusVenda statusVenda;
 }
+

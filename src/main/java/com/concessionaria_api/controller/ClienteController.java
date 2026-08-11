@@ -1,7 +1,11 @@
 package com.concessionaria_api.controller;
 
+import com.concessionaria_api.dto.ClienteRequestDTO;
+import com.concessionaria_api.dto.ClienteResponseDTO;
 import com.concessionaria_api.model.Cliente;
 import com.concessionaria_api.repository.ClienteRepository;
+import com.concessionaria_api.service.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -17,38 +21,30 @@ import java.util.List;
 public class ClienteController {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente cliente) {
-        Cliente novoCliente = Cliente.builder()
-                .nome(cliente.getNome())
-                .email(cliente.getEmail())
-                .cpf(cliente.getCpf())
-                .telefone(cliente.getTelefone())
-                .build();
+    public ResponseEntity<ClienteResponseDTO> cadastrar(@Valid @RequestBody ClienteRequestDTO dto) {
 
-        clienteRepository.save(novoCliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoCliente);
+        ClienteResponseDTO cliente = clienteService.cadastrar(dto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
     }
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> listar() {
-        return ResponseEntity.ok(clienteRepository.findAll());
+    public ResponseEntity<List<ClienteResponseDTO>> listar() {
+
+        return ResponseEntity.ok(clienteService.listar());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
-        Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado."));
-
-        return ResponseEntity.ok(cliente);
+    public ResponseEntity<ClienteResponseDTO> buscarPorId(@Valid @PathVariable Long id) {
+        return ResponseEntity.ok(clienteService.buscarPorId(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        clienteRepository.deleteById(id);
-
+    public ResponseEntity<Void> deletar(@Valid @PathVariable Long id) {
+        clienteService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
