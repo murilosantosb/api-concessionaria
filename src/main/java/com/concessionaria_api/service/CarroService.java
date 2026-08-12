@@ -74,6 +74,27 @@ public class CarroService {
         );
     }
 
+    public List<CarroResponseDTO> buscarComFiltro(String cor, Integer anoModelo) {
+
+        List<Carro> carros = carroRepository.buscarComFiltro(cor, anoModelo);
+
+        return carros.stream()
+                .map(carro -> new CarroResponseDTO(
+                        carro.getId(),
+                        carro.getMarca(),
+                        carro.getModelo(),
+                        carro.getAnoFabricacao(),
+                        carro.getAnoModelo(),
+                        carro.getCor(),
+                        carro.getChassi(),
+                        carro.getPlaca(),
+                        carro.getQuilometragem(),
+                        carro.getPreco(),
+                        carro.getTipoEstado(),
+                        carro.getStatusVenda()
+                )).toList();
+    }
+
     public Void deletar(Long id) {
         CarroResponseDTO carro = buscarPorId(id);
 

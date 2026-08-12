@@ -35,7 +35,7 @@ Quilometragem não passa do limite de Integer. IDs usam Long, padrão comum em p
 
 ---
 
-## Entrega 2 — DTOs e Validação (12/08)
+## Entrega 2 — DTOs e Validação (11/08)
 
 ### 1. Carro: id e status de venda não entram no cadastro
 Quem cadastra um carro não escolhe o id (isso é o banco que gera) nem o status de venda. Todo carro criado começa automaticamente como "disponível", quem muda isso depois é o sistema, não quem tá cadastrando.
@@ -54,3 +54,12 @@ Quando o problema é validação (campo errado, vazio, fora do limite), devolvo 
 
 ### 6. Chassi, placa e CPF duplicados nunca chegam a virar erro feio do banco
 Antes de salvar, o sistema checa se já existe alguém com aquele chassi, placa ou CPF, e avisa isso de um jeito claro. Assim o erro nunca aparece como uma mensagem técnica de banco de dados pro usuário.
+
+
+## Entrega 3 — Filtro e Documentação (12/08)
+
+### 1. Filtro por cor e ano é opcional, não obrigatório
+Se o cliente da API não mandar nenhum filtro, a busca retorna todos os carros. Se mandar só cor, filtra só por cor. Se mandar só ano, filtra só por ano. Se mandar os dois, filtra pelos dois juntos.
+
+### 2. Filtro reaproveita o endpoint de listagem
+Não criei uma rota separada pra "buscar com filtro" — o mesmo GET que lista todos os carros aceita os parâmetros opcionais. Fica mais simples pra quem usa a API, um endpoint só faz as duas coisas.
